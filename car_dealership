@@ -1,0 +1,132 @@
+CREATE TABLE "Car" (
+  "Car_id" integer PRIMARY KEY,
+  "New" boolean,
+  "Used" boolean,
+  "Make" varchar,
+  "Model" varchar,
+  "Year" integer,
+  "Vin" Serial,
+  "Invoice_ID" integer
+  
+  );
+
+CREATE TABLE "Sales_People" (
+  "Sales_ID" integer PRIMARY KEY,
+  "First_Name" varchar,
+  "Last_Name" varchar
+);
+
+CREATE TABLE "Invoice" (
+  "Invoice_number" integer PRIMARY KEY,
+  "Sales_ID" integer,
+  "Car_id" integer,
+  "Payment" float4,
+  "Invoice_Date" timestamp,
+  "Customer_ID" integer,
+  "Mechanic_ID" integer
+);
+
+CREATE TABLE "Mechanic" (
+  "Mechanic_ID" integer PRIMARY KEY,
+  "First_Name" varchar,
+  "Last_Name" varchar
+);
+
+CREATE TABLE "Service_Ticket" (
+  "Serv_Ticket" integer PRIMARY KEY,
+  "Service_ID" integer,
+  "Price" float4,
+  "Invoice_number" integer
+);
+
+CREATE TABLE "Customer" (
+  "Customer_ID" integer PRIMARY KEY,
+  "First_Name" varchar,
+  "Last_Name" varchar,
+  "Email" varchar,
+  "Address" varchar,
+  "Phone_num" integer
+);
+
+CREATE TABLE "Parts" (
+  "Parts_ID" integer PRIMARY KEY,
+  "parts_num" integer,
+  "description" varchar,
+  "price" float4,
+  "retail" float4,
+  "Serv_Ticket" integer
+);
+
+CREATE TABLE "Service" (
+  "Service_ID" integer PRIMARY KEY,
+  "service_name" varchar,
+  "hourly" float4,
+  "Mechanic_ID" integer
+);
+
+ALTER TABLE "Invoice" ADD FOREIGN KEY ("Car_id") REFERENCES "Car" ("Car_id");
+
+ALTER TABLE "Invoice" ADD FOREIGN KEY ("Customer_ID") REFERENCES "Customer" ("Customer_ID");
+
+ALTER TABLE "Parts" ADD FOREIGN KEY ("Serv_Ticket") REFERENCES "Service_Ticket" ("Serv_Ticket");
+
+ALTER TABLE "Invoice" ADD FOREIGN KEY ("Sales_ID") REFERENCES "Sales_People" ("Sales_ID");
+
+ALTER TABLE "Service_Ticket" ADD FOREIGN KEY ("Service_ID") REFERENCES "Service" ("Service_ID");
+
+ALTER TABLE "Service" ADD FOREIGN KEY ("Mechanic_ID") REFERENCES "Mechanic" ("Mechanic_ID");
+
+ALTER TABLE "Service_Ticket" ADD FOREIGN KEY ("Invoice_number") REFERENCES "Invoice" ("Invoice_number");
+
+insert into "Car" ("Car_id", "New", "Used", "Make", "Model", "Year", "Vin", "Invoice_ID")
+values (1, True, False, 'Ford', 'Ranger', 2020, 4322, 1111);
+
+insert into "Car" ("Car_id", "New", "Used", "Make", "Model", "Year", "Vin", "Invoice_ID")
+values (2, True, False, 'Ford', 'Fusion', 2020, 4333, 1112);
+
+insert into "Customer" ("Customer_ID", "First_Name", "Last_Name", "Email", "Address", "Phone_num")
+values (444, 'Ronald', 'Regan', 'nonya@gmail.com', '555 234 st', 515-222-3333);
+
+insert into "Customer" ("Customer_ID", "First_Name", "Last_Name", "Email", "Address", "Phone_num")
+values (445, 'Ted', 'Bundy', 'nonya2@gmail.com', '555 123 st', 515-333-4444);
+
+insert into "Mechanic"("Mechanic_ID", "First_Name", "Last_Name")
+values (555, 'Super', 'Man');
+
+insert into "Mechanic"("Mechanic_ID", "First_Name", "Last_Name")
+values (556, 'Sour', 'Diesel');
+
+insert into "Service"("Service_ID", "service_name", "hourly", "Mechanic_ID")
+values (111, 'Dust wipers', 69.69, 555);
+
+insert into "Service"("Service_ID", "service_name", "hourly", "Mechanic_ID")
+values (112, 'kick tire', 69.69, 556);
+
+insert into "Sales_People"("Sales_ID", "First_Name", "Last_Name")
+values (1, 'Carl', 'YoMama');
+
+insert into "Sales_People"("Sales_ID", "First_Name", "Last_Name")
+values (2, 'Steve', 'Jenkins');
+
+insert into "Invoice" ("Invoice_number", "Sales_ID", "Car_id", "Invoice_Date", "Customer_ID", "Mechanic_ID")
+values (333, 1, 1, '2008-01-01 00:00:01', 444, 555);
+
+insert into "Invoice" ("Invoice_number", "Sales_ID", "Car_id", "Invoice_Date", "Customer_ID", "Mechanic_ID")
+values (334, 2, 2, '2008-01-01 00:00:11', 445, 556);
+
+
+insert into "Service_Ticket"("Serv_Ticket", "Service_ID", "Price", "Invoice_number")
+values (999, 111, 99.99, 555);
+
+insert into "Service_Ticket"("Serv_Ticket", "Service_ID", "Price", "Invoice_number")
+values (998, 112, 99.99, 556);
+
+
+insert into "Parts" ("Parts_ID", "parts_num", "description", "price", "retail", "Serv_Ticket")
+values (98989, 89898, 'wrench', 5000, 1.99, 999);
+
+insert into "Parts" ("Parts_ID", "parts_num", "description", "price", "retail", "Serv_Ticket")
+values (98988, 89899, 'NUT', 4999, .99, 998);
+
+
+
